@@ -137,14 +137,14 @@ module i2c_slave
       else        wr_en_wdata <= wr_en && (~next_data_is_addr) && (bit_count_eq_9 || (multi_cycle && (bit_counter < 5)));
     
    always_ff @(posedge scl, negedge rst_n)
-      if (!rst_n)                                    addr <= 8'd0;
-      else if (wdata_ready && next_data_is_addr)     addr <= shift_reg[7:0];
-      else if ((bit_counter == 4'd8) && multi_cycle) addr <= addr + 'd1;
-   
+      if (!rst_n)                                             addr <= 8'd0;
+      else if (wdata_ready && next_data_is_addr)              addr <= shift_reg[7:0];
+      else if (wr_en && (bit_counter == 4'd8) && multi_cycle) addr <= addr + 'd1;
+      else if (rd_en && (bit_counter == 4'd3) && multi_cycle) addr <= addr + 'd1;
+  
    always_ff @(posedge scl, negedge rst_n)
       if (!rst_n) rd_en_trig <= 1'b0;
-      else        rd_en_trig <= rd_en && (bit_counter < 4'd4);
- //     else        rd_en_trig <= (((sda_in && (!multi_cycle)) || rd_en) && (bit_counter == 4'd8));
+      else        rd_en_trig <= ((!wr_en) && (bit_counter == 4'd3)); // do preemptive reads, needed for slow core clock
    
    // 
    always_ff @(posedge scl, negedge rst_n)
