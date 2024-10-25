@@ -1,7 +1,7 @@
 module tb_i2c_and_spi_3wire ();
 
-   parameter EXT_CLK_PERIOD_NS = 4900;
-   parameter SCLK_PERIOD_NS    = 9800;
+   parameter EXT_CLK_PERIOD_NS = 2000;
+   parameter SCLK_PERIOD_NS    = 4000;
    
    reg  clk;
    reg  button_0;
@@ -127,7 +127,7 @@ module tb_i2c_and_spi_3wire ();
       #40us;
       u_mstr_i2c.i2c_write(7'h24, 8'h02, 8'h3A);
       #501us;
-      u_mstr_i2c.i2c_read (7'h24, 8'h02, i2c_read_data);
+      u_mstr_i2c.i2c_read (7'h24, 8'h01, i2c_read_data);
       u_mstr_i2c.i2c_write(7'h24, 8'h00, 8'hC2);
       #30us;
       //$finish;
