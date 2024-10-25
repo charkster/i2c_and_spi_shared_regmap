@@ -146,7 +146,7 @@ module i2c_slave
       if (!rst_n) rd_en_trig <= 1'b0;
       else        rd_en_trig <= ((!wr_en) && (bit_counter == 4'd3)); // do preemptive reads, needed for slow core clock
    
-   // 
+    
    always_ff @(posedge scl, negedge rst_n)
       if (!rst_n)                                   wdata <= 8'd0;
       else if (wdata_ready && (!next_data_is_addr)) wdata <= shift_reg[7:0];
