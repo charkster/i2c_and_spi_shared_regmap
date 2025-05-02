@@ -144,7 +144,8 @@ module i2c_slave
   
    always_ff @(posedge scl, negedge rst_n)
       if (!rst_n) rd_en_trig <= 1'b0;
-      else        rd_en_trig <= ((!wr_en) && (bit_counter == 4'd3)); // do preemptive reads, needed for slow core clock
+//      else        rd_en_trig <= ((!wr_en) && (bit_counter == 4'd3)); // do preemptive reads, needed for slow core clock
+  else        rd_en_trig <= (((sda_in && (!multi_cycle)) || rd_en) && (bit_counter == 4'd8));
    
     
    always_ff @(posedge scl, negedge rst_n)
